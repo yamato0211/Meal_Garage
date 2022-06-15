@@ -1,0 +1,24 @@
+from pydantic import BaseModel
+
+
+class SignUpPayload(BaseModel):
+    name: str
+    email: str
+    password: str
+
+
+class SignInPalyload(BaseModel):
+    email: str
+    password: str
+
+
+class User(BaseModel):
+    user_id: str
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class AuthInfo(BaseModel):
+    jwt: str
