@@ -11,8 +11,8 @@ import os
 SECRET = os.environ.get('SECRET', 'jwt_secret')
 
 
-def generate_token(db: Session, name: str, password: str) -> str:
-    user: User = get_user_by_name(db, name)
+def generate_token(db: Session, email: str, password: str) -> str:
+    user: User = get_user_by_name(db, email)
     password_hash = gen_password_hash(password)
     if user.password_hash != password_hash:
         raise HTTPException(status_code=401, detail='authentication failed')
@@ -21,7 +21,8 @@ def generate_token(db: Session, name: str, password: str) -> str:
 
     jwt_payload = {
         'exp': exp_datetime.timestamp(),
-        'user_id': user.user_id
+        'user_id': user.user_id,
+        'user_email': user.email
     }
 
     encoded_jwt = jwt.encode(jwt_payload, SECRET, algorithm='HS256')

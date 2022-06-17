@@ -14,16 +14,17 @@ def gen_password_hash(password: str):
     return hash.decode()
 
 
-def create_user(db: Session, name: str, password: str) -> UserSchema:
-    same_name_user = db.query(User).filter(User.name == name).first()
+def create_user(db: Session, name: str, email: str, password: str) -> UserSchema:
+    same_name_user = db.query(User).filter(User.email == email).first()
     if same_name_user is not None:
         raise HTTPException(
-            status_code=400, detail="this name is already used")
+            status_code=400, detail="this email is already used")
 
     password_hash = gen_password_hash(password)
 
     user_orm = User(
         name=name,
+        email=email,
         password_hash=password_hash,
     )
 
@@ -44,11 +45,11 @@ def get_user_by_id(db: Session, user_id: str) -> UserSchema:
     return user
 
 
-def get_user_by_name(db: Session, name: str) -> User:
-    user = db.query(User).filter(User.name == name).first()
+def get_user_by_name(db: Session, email: str) -> User:
+    user = db.query(User).filter(User.email == email).first()
     if user is None:
         raise HTTPException(
-            status_code=400, detail='user has this name is not exist')
+            status_code=400, detail='user has this email is not exist')
     return user
 
 

@@ -7,7 +7,7 @@ class SignUpPayload(BaseModel):
     password: str
 
 
-class SignInPalyload(BaseModel):
+class SignInPayload(BaseModel):
     email: str
     password: str
 
