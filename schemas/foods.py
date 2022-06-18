@@ -2,12 +2,17 @@ from datetime import date
 from pydantic import BaseModel
 
 
-class Food(BaseModel):
+class Foods(BaseModel):
     food_id: str
     name: str
 
+    class Config:
+        orm_mode = True
+
 
 class Garage(BaseModel):
+    user_id: str
+    food_id: str
     quantity: int
     limit_at: date
 
